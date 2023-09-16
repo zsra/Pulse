@@ -17,7 +17,7 @@ public class User
 
     public User(string id, string name, string email, string username, string password, DateTime createdAt,
         IEnumerable<string> roles, IEnumerable<string> posts, IEnumerable<string> followed,
-        IEnumerable<string> followers, IEnumerable<string> likes, IEnumerable<string> shared)
+        IEnumerable<string> followers, IEnumerable<string> likes)
     {
         Id = id;
         Name = name;
@@ -30,7 +30,6 @@ public class User
         Followed = followed;
         Followers = followers;
         Likes = likes;
-        Shared = shared;
     }
 
     [BsonId]
@@ -48,5 +47,4 @@ public class User
     public IEnumerable<string> Followed { get; set; } = new List<string>();
     public IEnumerable<string> Followers { get; set; } = new List<string>();
     public IEnumerable<string> Likes { get; set; } = new List<string>();
-    public IEnumerable<string> Shared { get; set; } = new List<string>();
 }
