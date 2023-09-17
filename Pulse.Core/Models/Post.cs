@@ -1,9 +1,10 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
+using Pulse.Core.Interfaces.Models;
 
 namespace Pulse.Core.Models;
 
-public class Post
+public class Post : IModel
 {
     public Post(string content, string creatorId)
     {
@@ -13,14 +14,14 @@ public class Post
     }
 
     public Post(string id, string content, uint likes, DateTime postedAt,
-        string creatorId, IEnumerable<string> responses, IEnumerable<string> shared)
+        string creatorId, IEnumerable<string> comments, IEnumerable<string> shared)
     {
         Id = id;
         Content = content;
         Likes = likes;
         PostedAt = postedAt;
         CreatorId = creatorId;
-        Responses = responses;
+        Comments = comments;
         Shared = shared;
     }
 
@@ -33,6 +34,6 @@ public class Post
     public DateTime PostedAt { get; }
 
     public required string CreatorId { get; set; }
-    public IEnumerable<string> Responses { get; set; } = new List<string>();
+    public IEnumerable<string> Comments { get; set; } = new List<string>();
     public IEnumerable<string> Shared { get; set; } = new List<string>();
 }

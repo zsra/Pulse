@@ -1,29 +1,30 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
+using Pulse.Core.Interfaces.Models;
 
 namespace Pulse.Core.Models;
 
-public class Response
+public class Comment : IModel
 {
-    public Response(string content, string postId, string creatorId)
+    public Comment(string content, string postId, string creatorId)
     {
         Id = Guid.NewGuid().ToString();
         Content = content;
         PostId = postId;
         CreatorId = creatorId;
-        RespondedAt = DateTime.UtcNow;
+        CommentedAt = DateTime.UtcNow;
     }
 
-    public Response(string id, string content, uint likes, DateTime respondedAt, 
-        string postId, string creatorId, IEnumerable<string> responses, IEnumerable<string> shared)
+    public Comment(string id, string content, uint likes, DateTime commentedAt, 
+        string postId, string creatorId, IEnumerable<string> comments, IEnumerable<string> shared)
     {
         Id = id;
         Content = content;
         Likes = likes;
-        RespondedAt = respondedAt;
+        CommentedAt = commentedAt;
         PostId = postId;
         CreatorId = creatorId;
-        Responses = responses;
+        Comments = comments;
         Shared = shared;
     }
 
@@ -33,10 +34,10 @@ public class Response
     public required string Content { get; set; }
     public uint Likes { get; set; }
     [BsonRepresentation(BsonType.DateTime)]
-    public DateTime RespondedAt { get; }
+    public DateTime CommentedAt { get; }
 
     public required string PostId { get; set; }
     public required string CreatorId { get; set; }
-    public IEnumerable<string> Responses { get; set; } = new List<string>();
+    public IEnumerable<string> Comments { get; set; } = new List<string>();
     public IEnumerable<string> Shared { get; set; } = new List<string>();
 }
