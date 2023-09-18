@@ -9,6 +9,6 @@ public class Response
 
     public IResponseContent? Content { get; set; } 
 
-    public IEnumerable<string> Messages { get; set; } 
+    public ICollection<string> Messages { get; set; } 
         = new List<string>();
 }

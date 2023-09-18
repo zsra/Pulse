@@ -4,9 +4,9 @@ namespace Pulse.Core.Interfaces.Infrastructures;
 
 public interface IRepository<TModel> where TModel : IModel
 {
-    TModel GetById(string id);
-    IEnumerable<TModel> GetAll();
-    TModel Create(TModel model);
-    TModel Update(TModel model);
-    void Delete(TModel model);
+    ValueTask<TModel> GetById(string id);
+    ValueTask<IEnumerable<TModel>> GetAll();
+    ValueTask<TModel> Create(TModel model);
+    ValueTask<TModel> Update(TModel model);
+    ValueTask Delete(TModel model);
 }

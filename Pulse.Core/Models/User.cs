@@ -39,10 +39,10 @@ public class User : IModel
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
     public string Id { get; }
-    public required string Name { get; set; }
-    public required string Email { get; set; }
-    public required string Username { get; set; }
-    public required string HashedPassword { get; set; }
+    public string Name { get; set; }
+    public string Email { get; set; }
+    public string Username { get; set; }
+    public string HashedPassword { get; set; }
     [BsonRepresentation(BsonType.DateTime)]
     public DateTime CreatedAt { get; set; }
     [BsonRepresentation(BsonType.DateTime)]
