@@ -2,7 +2,7 @@
 
 namespace Pulse.Core.DTOs;
 
-public class SignUpDto : IResponseContent
+public class SignUpDto
 {
     public SignUpDto(string username, string password,
         string rePassword, string email, DateTime birthday)

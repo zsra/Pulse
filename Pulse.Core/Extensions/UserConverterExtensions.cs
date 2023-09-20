@@ -5,7 +5,7 @@ namespace Pulse.Core.Extensions;
 
 public static class UserConverterExtensions
 {
-    public static User SignUpToUser(SignUpDto signUp)
+    public static User SignUpToUser(this SignUpDto signUp)
     {
         return new User(
             signUp.Username,

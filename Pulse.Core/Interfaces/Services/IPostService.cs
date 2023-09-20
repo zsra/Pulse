@@ -7,5 +7,5 @@ public interface IPostService
 {
     ValueTask<Response> CreatePostAsync(CreatePostDto post);
     ValueTask<Response> GetPostByIdAsync(string id);
-    ValueTask<Response> DeletePostAsync(string id);
+    ValueTask<Response> DeletePostAsync(string id, string creatorId);
 }

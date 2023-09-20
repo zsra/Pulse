@@ -13,7 +13,7 @@ public class Post : IModel
         CreatorId = creatorId;
     }
 
-    public Post(string id, string content, uint likes, DateTime postedAt,
+    public Post(string id, string content, int likes, DateTime postedAt,
         string creatorId, IEnumerable<string> comments, IEnumerable<string> shared)
     {
         Id = id;
@@ -28,12 +28,12 @@ public class Post : IModel
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
     public string Id { get; }
-    public required string Content { get; set; }
-    public uint Likes { get; set; }
+    public string Content { get; set; }
+    public int Likes { get; set; }
     [BsonRepresentation(BsonType.DateTime)]
     public DateTime PostedAt { get; }
 
-    public required string CreatorId { get; set; }
+    public string CreatorId { get; set; }
     public IEnumerable<string> Comments { get; set; } = new List<string>();
     public IEnumerable<string> Shared { get; set; } = new List<string>();
 }

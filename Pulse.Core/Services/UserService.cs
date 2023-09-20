@@ -52,7 +52,7 @@ public class UserService : IUserService
 
         if(_signUpValidation.IsValid(signUp, ref response))
         {
-            var user = UserConverterExtensions.SignUpToUser(signUp);
+            var user = signUp.SignUpToUser();
             await _userReposirory.CreateAsync(user);
         }
 
