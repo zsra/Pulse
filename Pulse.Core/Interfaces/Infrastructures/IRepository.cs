@@ -8,5 +8,5 @@ public interface IRepository<TModel> where TModel : IModel
     ValueTask<IEnumerable<TModel>> GetAllAsync();
     ValueTask<TModel> CreateAsync(TModel model);
     ValueTask<TModel> UpdateAsync(TModel model);
-    ValueTask DeleteAsync(TModel model);
+    ValueTask<bool> DeleteAsync(string id);
 }

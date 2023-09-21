@@ -35,9 +35,34 @@ namespace Pulse.Core.Services
             return response;
         }
 
-        public ValueTask<Response> DeletePostAsync(string id, string creatorId)
+        public async ValueTask<Response> DeletePostAsync(string id, string creatorId)
         {
-            throw new NotImplementedException();
+            _ = id ?? throw new ArgumentNullException(nameof(id));
+            _ = creatorId ?? throw new ArgumentNullException(nameof(creatorId));
+            Response response = new();
+
+            var post = await _repository.GetByIdAsync(id);
+
+            if (post == null)
+            {
+                response.Messages.Add($"No post found with id of {id}");
+                return response;
+            }
+
+            if (post.CreatorId == creatorId)
+            {
+                response.Messages.Add($"Post is not access for the user to delete.");
+                return response;
+            }
+
+            if (await _repository.DeleteAsync(post.Id)) 
+            {
+                response.Messages.Add($"Message deleted");
+                return response;
+            }
+
+            response.Messages.Add($"Message couldn't delete");
+            return response;
         }
 
         public async ValueTask<Response> GetPostByIdAsync(string id)

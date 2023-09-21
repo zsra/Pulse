@@ -16,7 +16,7 @@ public class Comment : IModel
     }
 
     public Comment(string id, string content, uint likes, DateTime commentedAt, 
-        string postId, string creatorId, IEnumerable<string> comments, IEnumerable<string> shared)
+        string postId, string creatorId, IEnumerable<string> replies, IEnumerable<string> shared)
     {
         Id = id;
         Content = content;
@@ -24,20 +24,20 @@ public class Comment : IModel
         CommentedAt = commentedAt;
         PostId = postId;
         CreatorId = creatorId;
-        Comments = comments;
+        Replies = replies;
         Shared = shared;
     }
 
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
     public string Id { get; }
-    public required string Content { get; set; }
+    public string Content { get; set; }
     public uint Likes { get; set; }
     [BsonRepresentation(BsonType.DateTime)]
     public DateTime CommentedAt { get; }
 
-    public required string PostId { get; set; }
-    public required string CreatorId { get; set; }
-    public IEnumerable<string> Comments { get; set; } = new List<string>();
+    public string PostId { get; set; }
+    public string CreatorId { get; set; }
+    public IEnumerable<string> Replies { get; set; } = new List<string>();
     public IEnumerable<string> Shared { get; set; } = new List<string>();
 }
