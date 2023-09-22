@@ -2,6 +2,6 @@
 
 namespace Pulse.Core.Interfaces.Infrastructures;
 
-internal interface ICommentRepository : IRepository<Comment>
+public interface ICommentRepository : IRepository<Comment>
 {
 }

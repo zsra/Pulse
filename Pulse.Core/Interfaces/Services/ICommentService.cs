@@ -1,9 +1,9 @@
 ﻿using Pulse.Core.DTOs;
+using Pulse.Core.Feedback;
 
 namespace Pulse.Core.Interfaces.Services;
 
 public interface ICommentService
 {
-    ValueTask<ReadPostDto> AddComment(CreateCommentDto comment);
-    ValueTask<ReadPostDto> ReplyComment(CreateCommentDto comment);
+    ValueTask<Response> AddComment(CreateCommentDto comment);
 }

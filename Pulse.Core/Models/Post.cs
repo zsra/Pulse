@@ -14,7 +14,7 @@ public class Post : IModel
     }
 
     public Post(string id, string content, int likes, DateTime postedAt,
-        string creatorId, IEnumerable<string> comments, IEnumerable<string> shared)
+        string creatorId, ICollection<string> comments, ICollection<string> shared)
     {
         Id = id;
         Content = content;
@@ -34,6 +34,6 @@ public class Post : IModel
     public DateTime PostedAt { get; }
 
     public string CreatorId { get; set; }
-    public IEnumerable<string> Comments { get; set; } = new List<string>();
-    public IEnumerable<string> Shared { get; set; } = new List<string>();
+    public ICollection<string> Comments { get; set; } = new List<string>();
+    public ICollection<string> Shared { get; set; } = new List<string>();
 }

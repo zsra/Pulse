@@ -16,7 +16,7 @@ public class Comment : IModel
     }
 
     public Comment(string id, string content, uint likes, DateTime commentedAt, 
-        string postId, string creatorId, IEnumerable<string> replies, IEnumerable<string> shared)
+        string postId, string creatorId, ICollection<string> replies, ICollection<string> shared)
     {
         Id = id;
         Content = content;
@@ -38,6 +38,6 @@ public class Comment : IModel
 
     public string PostId { get; set; }
     public string CreatorId { get; set; }
-    public IEnumerable<string> Replies { get; set; } = new List<string>();
-    public IEnumerable<string> Shared { get; set; } = new List<string>();
+    public ICollection<string> Replies { get; set; } = new List<string>();
+    public ICollection<string> Shared { get; set; } = new List<string>();
 }
