@@ -7,17 +7,17 @@ using Pulse.Infrastructure.Attributes;
 
 namespace Pulse.Infrastructure.Repositories;
 
-public class CommentRepository : ICommentRepository
+public class PostRepository : IPostRepository
 {
-    private readonly IMongoCollection<Comment> _collection;
+    private readonly IMongoCollection<Post> _collection;
 
-    public CommentRepository(IMongoSettings settings)
+    public PostRepository(IMongoSettings settings)
     {
         var database = new MongoClient(settings.ConnectionString).GetDatabase(settings.DatabaseName);
-        _collection = database.GetCollection<Comment>(GetCollectionName(typeof(Comment)));
+        _collection = database.GetCollection<Post>(GetCollectionName(typeof(Post)));
     }
 
-    public async ValueTask<Comment> CreateAsync(Comment model)
+    public async ValueTask<Post> CreateAsync(Post model)
     {
         _collection.InsertOne(model);
 
@@ -27,28 +27,28 @@ public class CommentRepository : ICommentRepository
     public async ValueTask DeleteAsync(string id)
     {
         var objectId = new ObjectId(id);
-        var filter = Builders<Comment>.Filter.Eq(comment => ObjectId.Parse(comment.Id), objectId);
+        var filter = Builders<Post>.Filter.Eq(post => ObjectId.Parse(post.Id), objectId);
 
         await _collection.FindAsync(filter);
     }
 
-    public async ValueTask<IEnumerable<Comment>> GetAllAsync()
+    public async ValueTask<IEnumerable<Post>> GetAllAsync()
     {
-        IAsyncCursor<Comment> cursor = await _collection.FindAsync(Builders<Comment>.Filter.Empty);
+        IAsyncCursor<Post> cursor = await _collection.FindAsync(Builders<Post>.Filter.Empty);
         return cursor.ToEnumerable();
     }
 
-    public async ValueTask<Comment> GetByIdAsync(string id)
+    public async ValueTask<Post> GetByIdAsync(string id)
     {
         var objectId = new ObjectId(id);
-        var filter = Builders<Comment>.Filter.Eq(comment => ObjectId.Parse(comment.Id), objectId);
+        var filter = Builders<Post>.Filter.Eq(post => ObjectId.Parse(post.Id), objectId);
         return await _collection.Find(filter).SingleOrDefaultAsync();
     }
 
-    public async ValueTask<Comment> UpdateAsync(Comment model)
+    public async ValueTask<Post> UpdateAsync(Post model)
     {
         var objectId = new ObjectId(model.Id);
-        var filter = Builders<Comment>.Filter.Eq(comment => ObjectId.Parse(comment.Id), objectId);
+        var filter = Builders<Post>.Filter.Eq(post => ObjectId.Parse(post.Id), objectId);
         _collection.ReplaceOne(filter, model);
 
         return await GetByIdAsync(model.Id);
