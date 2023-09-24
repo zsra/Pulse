@@ -29,14 +29,14 @@ public class CommentRepository : ICommentRepository
         var objectId = new ObjectId(id);
         var filter = Builders<Comment>.Filter.Eq(comment => ObjectId.Parse(comment.Id), objectId);
 
-        _collection.FindOneAndDelete(filter);
+        _collection.Find(filter);
 
         return ValueTask.CompletedTask;
     }
 
     public ValueTask<IEnumerable<Comment>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        return ValueTask.FromResult(_collection.Find(Builders<Comment>.Filter.Empty).ToEnumerable());
     }
 
     public async ValueTask<Comment> GetByIdAsync(string id)
