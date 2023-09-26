@@ -3,8 +3,8 @@ using Pulse.Core.Feedback;
 
 namespace Pulse.Core.Interfaces.Services;
 
-internal interface IUserService
+public interface IUserService
 {
     ValueTask<Response> SignUpAsync(SignUpDto signUp);
-    ValueTask<Response> SignInAsync(string email, string password);
+    ValueTask<Response> SignInAsync(SignInDto signIn);
 }

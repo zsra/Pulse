@@ -12,28 +12,36 @@ public class UserService : IUserService
 {
     private readonly IUserRepository _userReposirory;
     private readonly IValidation<SignUpDto> _signUpValidation;
+    private readonly IValidation<SignInDto> _signInValidation;
 
-    public UserService(IUserRepository userReposirory, IValidation<SignUpDto> signUpValidation)
+    public UserService(IUserRepository userReposirory,
+        IValidation<SignUpDto> signUpValidation, IValidation<SignInDto> signInValidation)
     {
         _userReposirory = userReposirory;
         _signUpValidation = signUpValidation;
+        _signInValidation = signInValidation;
     }
 
-    public async ValueTask<Response> SignInAsync(string email, string password)
+    public async ValueTask<Response> SignInAsync(SignInDto signIn)
     {
-        _ = email ?? throw new ArgumentNullException(nameof(email));
-        _ = password ?? throw new ArgumentNullException(nameof(password));
+        _ = signIn ?? throw new ArgumentNullException(nameof(signIn));
         
         Response response = new();
-        User user = await _userReposirory.GetUserByEmailAsync(email);
 
-        if(user == null)
+        if(!_signInValidation.IsValid(signIn, ref response))
         {
-            response.Messages.Add($"There are no user registered with {email}.");
             return response;
         }
 
-        if(!BCrypt.Net.BCrypt.Verify(password, user.HashedPassword))
+        User user = await _userReposirory.GetUserByEmailAsync(signIn.Email!);
+
+        if(user == null)
+        {
+            response.Messages.Add($"There are no user registered with {signIn.Email}.");
+            return response;
+        }
+
+        if(!BCrypt.Net.BCrypt.Verify(signIn.Password, user.HashedPassword))
         {
             response.Messages.Add($"Incorrect password.");
             return response;
