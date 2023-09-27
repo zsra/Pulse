@@ -55,13 +55,8 @@ namespace Pulse.Core.Services
                 return response;
             }
 
-            if (await _repository.DeleteAsync(post.Id)) 
-            {
-                response.Messages.Add($"Message deleted");
-                return response;
-            }
+            await _repository.DeleteAsync(post.Id);
 
-            response.Messages.Add($"Message couldn't delete");
             return response;
         }
 
