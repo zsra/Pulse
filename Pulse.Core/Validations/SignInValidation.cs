@@ -4,7 +4,7 @@ using Pulse.Core.Interfaces.Validations;
 
 namespace Pulse.Core.Validations;
 
-internal class SignInValidation : IValidation<SignInDto>
+public class SignInValidation : IValidation<SignInDto>
 {
     public bool IsValid(SignInDto item, ref Response response)
     {

@@ -4,7 +4,7 @@ using Pulse.Core.Interfaces.Validations;
 
 namespace Pulse.Core.Validations;
 
-internal class CreateCommentValidation : IValidation<CreateCommentDto>
+public class CreateCommentValidation : IValidation<CreateCommentDto>
 {
     public bool IsValid(CreateCommentDto item, ref Response response)
     {

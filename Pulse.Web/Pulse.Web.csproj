@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Pulse.Core\Pulse.Core.csproj" />
+    <ProjectReference Include="..\Pulse.Infrastructure\Pulse.Infrastructure.csproj" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
