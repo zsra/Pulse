@@ -14,7 +14,7 @@ public class UserRepository : IUserRepository
     public UserRepository(IMongoSettings settings)
     {
         var database = new MongoClient(settings.ConnectionString).GetDatabase(settings.DatabaseName);
-        _collection = database.GetCollection<User>(GetCollectionName(typeof(User)));
+        _collection = database.GetCollection<User>(nameof(User));
     }
 
     public async ValueTask<User> CreateAsync(User model)

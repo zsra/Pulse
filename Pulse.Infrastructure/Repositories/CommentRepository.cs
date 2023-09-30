@@ -14,7 +14,7 @@ public class CommentRepository : ICommentRepository
     public CommentRepository(IMongoSettings settings)
     {
         var database = new MongoClient(settings.ConnectionString).GetDatabase(settings.DatabaseName);
-        _collection = database.GetCollection<Comment>(GetCollectionName(typeof(Comment)));
+        _collection = database.GetCollection<Comment>(nameof(Comment));
     }
 
     public async ValueTask<Comment> CreateAsync(Comment model)
@@ -52,13 +52,5 @@ public class CommentRepository : ICommentRepository
         _collection.ReplaceOne(filter, model);
 
         return await GetByIdAsync(model.Id);
-    }
-
-    private static string? GetCollectionName(Type documentType)
-    {
-        return (documentType.GetCustomAttributes(
-                typeof(BsonCollectionAttribute),
-                true)
-            .FirstOrDefault() as BsonCollectionAttribute)?.CollectionName;
     }
 }

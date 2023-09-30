@@ -14,7 +14,7 @@ public class PostRepository : IPostRepository
     public PostRepository(IMongoSettings settings)
     {
         var database = new MongoClient(settings.ConnectionString).GetDatabase(settings.DatabaseName);
-        _collection = database.GetCollection<Post>(GetCollectionName(typeof(Post)));
+        _collection = database.GetCollection<Post>(nameof(Post));
     }
 
     public async ValueTask<Post> CreateAsync(Post model)
@@ -52,13 +52,5 @@ public class PostRepository : IPostRepository
         _collection.ReplaceOne(filter, model);
 
         return await GetByIdAsync(model.Id);
-    }
-
-    private static string? GetCollectionName(Type documentType)
-    {
-        return (documentType.GetCustomAttributes(
-                typeof(BsonCollectionAttribute),
-                true)
-            .FirstOrDefault() as BsonCollectionAttribute)?.CollectionName;
     }
 }

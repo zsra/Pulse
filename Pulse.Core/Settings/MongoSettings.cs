@@ -2,12 +2,6 @@
 
 public class MongoSettings : IMongoSettings
 {
-    public MongoSettings(string databaseName, string connectionString)
-    {
-        DatabaseName = databaseName;
-        ConnectionString = connectionString;
-    }
-
-    public string DatabaseName { get; set; }
-    public string ConnectionString { get; set; }
+    public string DatabaseName { get; set; } = string.Empty;
+    public string ConnectionString { get; set; } = string.Empty;
 }
