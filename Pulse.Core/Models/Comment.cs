@@ -8,7 +8,7 @@ public class Comment : IModel
 {
     public Comment(string content, string postId, string creatorId)
     {
-        Id = Guid.NewGuid().ToString();
+        Id = ObjectId.GenerateNewId().ToString();
         Content = content;
         PostId = postId;
         CreatorId = creatorId;

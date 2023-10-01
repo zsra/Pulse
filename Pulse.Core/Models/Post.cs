@@ -8,7 +8,7 @@ public class Post : IModel
 {
     public Post(string content, string creatorId)
     {
-        Id = Guid.NewGuid().ToString();
+        Id = ObjectId.GenerateNewId().ToString();
         Content = content;
         CreatorId = creatorId;
     }

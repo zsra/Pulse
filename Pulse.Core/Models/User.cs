@@ -8,7 +8,7 @@ public class User : IModel
 {
     public User(string name, string email, string username, string password, DateTime birthday)
     {
-        Id = Guid.NewGuid().ToString();
+        Id = ObjectId.GenerateNewId().ToString();
         Name = name;
         Email = email;
         Username = username;

@@ -7,6 +7,7 @@ using Pulse.Core.Services;
 using Pulse.Core.Settings;
 using Pulse.Core.Validations;
 using Pulse.Infrastructure.Repositories;
+using Pulse.Infrastructure.Seeds;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,6 +52,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
+InitSeed seed = new InitSeed(app.Services.GetService<IUserRepository>()!);
+
+seed.Add().GetAwaiter();
 
 app.MapControllerRoute(
     name: "default",

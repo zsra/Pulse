@@ -18,7 +18,7 @@ public class UserRepository : IUserRepository
 
     public async ValueTask<User> CreateAsync(User model)
     {
-        _collection.InsertOne(model);
+        await _collection.InsertOneAsync(model);
 
         return await GetByIdAsync(model.Id);
     }
