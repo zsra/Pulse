@@ -3,7 +3,6 @@ using MongoDB.Driver;
 using Pulse.Core.Interfaces.Infrastructures;
 using Pulse.Core.Models;
 using Pulse.Core.Settings;
-using Pulse.Infrastructure.Attributes;
 
 namespace Pulse.Infrastructure.Repositories;
 

@@ -3,7 +3,6 @@ using MongoDB.Driver;
 using Pulse.Core.Interfaces.Infrastructures;
 using Pulse.Core.Models;
 using Pulse.Core.Settings;
-using Pulse.Infrastructure.Attributes;
 
 namespace Pulse.Infrastructure.Repositories;
 
@@ -60,14 +59,6 @@ public class UserRepository : IUserRepository
         IAsyncCursor<User> cursor = await _collection.FindAsync(filter);
 
         return cursor.Current.FirstOrDefault()!;
-    }
-
-    private static string? GetCollectionName(Type documentType)
-    {
-        return (documentType.GetCustomAttributes(
-                typeof(BsonCollectionAttribute),
-                true)
-            .FirstOrDefault() as BsonCollectionAttribute)?.CollectionName;
     }
 }
 
