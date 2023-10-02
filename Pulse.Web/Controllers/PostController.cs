@@ -34,7 +34,7 @@ public class PostController
     }
 
     [HttpPost("/create")]
-    public async ValueTask<IActionResult> Create(CreatePostDto post)
+    public async ValueTask<IActionResult> Create([FromBody] CreatePostDto post)
     {
         Response response = new();
 
@@ -50,8 +50,8 @@ public class PostController
         }
     }
 
-    [HttpDelete("/delete")]
-    public async ValueTask<IActionResult> Delete(string postId, string creatorId)
+    [HttpDelete("/delete/{creatorId}/{postId}")]
+    public async ValueTask<IActionResult> Delete(string creatorId, string postId)
     {
         Response response = new();
 

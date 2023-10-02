@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Pulse.Core.DTOs;
 using Pulse.Core.Interfaces.Infrastructures;
 using Pulse.Core.Interfaces.Services;
@@ -8,6 +10,7 @@ using Pulse.Core.Settings;
 using Pulse.Core.Validations;
 using Pulse.Infrastructure.Repositories;
 using Pulse.Infrastructure.Seeds;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +18,19 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
     .Configure<MongoSettings>(builder.Configuration.GetSection("PulseDbSettings"));
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => {
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
+    };
+});
 
 builder.Services
     .AddSingleton<IMongoSettings>(
@@ -49,6 +65,8 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseStaticFiles();
 app.UseRouting();
 

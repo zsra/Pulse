@@ -17,7 +17,7 @@ public class UserController
     }
 
     [HttpPost("/signup")]
-    public async ValueTask<IActionResult> SignUp(SignUpDto signUp)
+    public async ValueTask<IActionResult> SignUp([FromBody] SignUpDto signUp)
     {
         Response response = new();
         
@@ -34,7 +34,7 @@ public class UserController
     }
 
     [HttpPost("/signin")]
-    public async ValueTask<IActionResult> SignIn(SignInDto signIn)
+    public async ValueTask<IActionResult> SignIn([FromBody] SignInDto signIn)
     {
         Response response = new();
 

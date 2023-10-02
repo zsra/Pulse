@@ -17,7 +17,7 @@ public class CommentController
     }
 
     [HttpPost]
-    public async ValueTask<IActionResult> AddComment(CreateCommentDto comment)
+    public async ValueTask<IActionResult> AddComment([FromBody] CreateCommentDto comment)
     {
         Response response = new();
 

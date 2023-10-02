@@ -7,7 +7,7 @@ public class Response
 {
     public ResponseTypes ResponseType {  get; set; }
 
-    public IResponseContent? Content { get; set; } 
+    public object? Content { get; set; } 
 
     public ICollection<string> Messages { get; set; } 
         = new List<string>();

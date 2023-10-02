@@ -1,10 +1,15 @@
-﻿using Pulse.Core.DTOs;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using Pulse.Core.DTOs;
 using Pulse.Core.Extensions;
 using Pulse.Core.Feedback;
 using Pulse.Core.Interfaces.Infrastructures;
 using Pulse.Core.Interfaces.Services;
 using Pulse.Core.Interfaces.Validations;
 using Pulse.Core.Models;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace Pulse.Core.Services;
 
@@ -13,13 +18,15 @@ public class UserService : IUserService
     private readonly IUserRepository _userReposirory;
     private readonly IValidation<SignUpDto> _signUpValidation;
     private readonly IValidation<SignInDto> _signInValidation;
+    private readonly IConfiguration _config;
 
-    public UserService(IUserRepository userReposirory,
-        IValidation<SignUpDto> signUpValidation, IValidation<SignInDto> signInValidation)
+    public UserService(IUserRepository userReposirory, IValidation<SignUpDto> signUpValidation,
+        IValidation<SignInDto> signInValidation, IConfiguration config)
     {
         _userReposirory = userReposirory;
         _signUpValidation = signUpValidation;
         _signInValidation = signInValidation;
+        _config = config;
     }
 
     public async ValueTask<Response> SignInAsync(SignInDto signIn)
@@ -47,7 +54,7 @@ public class UserService : IUserService
             return response;
         }
 
-        // TODO: return with session key
+        response.Content = GenerateToken(user);
 
         return response;
     }
@@ -67,5 +74,23 @@ public class UserService : IUserService
         response.ResponseType = Enums.ResponseTypes.Okay;
 
         return response;
+    }
+
+    private string GenerateToken(User user)
+    {
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
+        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+        var claims = new[]
+        {
+                new Claim(ClaimTypes.NameIdentifier, user.Username),
+                new Claim(ClaimTypes.Role, user.Roles.First())
+            };
+        var token = new JwtSecurityToken(_config["Jwt:Issuer"],
+            _config["Jwt:Audience"],
+            claims,
+            expires: DateTime.Now.AddMinutes(15),
+            signingCredentials: credentials);
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
     }
 }
