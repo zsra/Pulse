@@ -2,7 +2,7 @@
 
 namespace Pulse.Core.DTOs
 {
-    public class ReadPostDto : IResponseContent
+    public class ReadPostDto
     {
         public string? Id { get; set; }
 
