@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Pulse.Core.DTOs;
-using Pulse.Core.Feedback;
 using Pulse.Core.Interfaces.Services;
 
 namespace Pulse.Web.Controllers;
@@ -19,51 +18,39 @@ public class PostController
     [HttpGet("/{id}")]
     public async ValueTask<IActionResult> GetPostById(string id)
     {
-        Response response = new();
-
         try
         {
-            response = await _postService.GetPostByIdAsync(id);
-            return new OkObjectResult(response);
+            return new OkObjectResult(await _postService.GetPostByIdAsync(id));
         }
         catch (Exception ex)
         {
-            response.Messages.Add(ex.Message);
-            return new BadRequestObjectResult(response);
+            return new BadRequestObjectResult(ex.Message);
         }
     }
 
     [HttpPost("/create")]
     public async ValueTask<IActionResult> Create([FromBody] CreatePostDto post)
     {
-        Response response = new();
-
         try
         {
-            response = await _postService.CreatePostAsync(post);
-            return new OkObjectResult(response);
+            return new OkObjectResult(await _postService.CreatePostAsync(post));
         }
         catch (Exception ex)
         {
-            response.Messages.Add(ex.Message);
-            return new BadRequestObjectResult(response);
+            return new BadRequestObjectResult(ex.Message);
         }
     }
 
     [HttpDelete("/delete/{creatorId}/{postId}")]
     public async ValueTask<IActionResult> Delete(string creatorId, string postId)
     {
-        Response response = new();
-
         try
         {
-            response = await _postService.DeletePostAsync(postId, creatorId);
-            return new OkObjectResult(response);
+            return new OkObjectResult(await _postService.DeletePostAsync(postId, creatorId));
         }
         catch (Exception ex)
         {
-            response.Messages.Add(ex.Message);
-            return new BadRequestObjectResult(response);
+            return new BadRequestObjectResult(ex.Message);
         }
     }
 }

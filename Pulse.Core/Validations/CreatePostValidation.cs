@@ -6,18 +6,20 @@ namespace Pulse.Core.Validations;
 
 public class CreatePostValidation : IValidation<CreatePostDto>
 {
-    public bool IsValid(CreatePostDto item, ref Response response)
+    public bool IsValid(CreatePostDto item, out List<ErrorMessage> errors)
     {
+        errors = new List<ErrorMessage>();
+
         if (string.IsNullOrEmpty(item.CreatorId))
         {
-            response.Messages.Add($"{item.CreatorId} canot be null");
+            errors.Add(new ErrorMessage(nameof(item.CreatorId), $"{item.CreatorId} canot be null"));
         }
 
-        if (string.IsNullOrEmpty(item.Content)) 
+        if (string.IsNullOrEmpty(item.Content))
         {
-            response.Messages.Add($"{item.Content} canot be null");
+            errors.Add(new ErrorMessage(nameof(item.Content), $"{item.Content} canot be null"));
         }
 
-        return !response.Messages.Any();
+        return !errors.Any();
     }
 }

@@ -5,7 +5,7 @@ namespace Pulse.Core.Interfaces.Services;
 
 public interface IPostService
 {
-    ValueTask<Response> CreatePostAsync(CreatePostDto post);
-    ValueTask<Response> GetPostByIdAsync(string id);
-    ValueTask<Response> DeletePostAsync(string id, string creatorId);
+    ValueTask<ServiceResult<ReadPostDto>> CreatePostAsync(CreatePostDto post);
+    ValueTask<ServiceResult<ReadPostDto>> GetPostByIdAsync(string id);
+    ValueTask<ServiceResult<bool>> DeletePostAsync(string id, string creatorId);
 }

@@ -18,63 +18,65 @@ namespace Pulse.Core.Services
             _validation = validation;
         }
 
-        public async ValueTask<Response> CreatePostAsync(CreatePostDto post)
+        public async ValueTask<ServiceResult<ReadPostDto>> CreatePostAsync(CreatePostDto post)
         {
             _ = post ?? throw new ArgumentNullException(nameof(post));
-            Response response = new();
+            ServiceResult<ReadPostDto> result = new();
 
-            if (!_validation.IsValid(post, ref response))
+            if (!_validation.IsValid(post, out List<ErrorMessage> errors))
             {
-                return response;
+                result.Errors = errors;
+                return result;
             }
 
             var savedPost = await _repository.CreateAsync(post.CreatePostDtoToPost());
 
-            response.Content = savedPost.PostToReadPostDto();
+            result.Data = savedPost.PostToReadPostDto();
 
-            return response;
+            return result;
         }
 
-        public async ValueTask<Response> DeletePostAsync(string id, string creatorId)
+        public async ValueTask<ServiceResult<bool>> DeletePostAsync(string id, string creatorId)
         {
             _ = id ?? throw new ArgumentNullException(nameof(id));
             _ = creatorId ?? throw new ArgumentNullException(nameof(creatorId));
-            Response response = new();
+            ServiceResult<bool> result = new();
 
             var post = await _repository.GetByIdAsync(id);
 
             if (post == null)
             {
-                response.Messages.Add($"No post found with id of {id}");
-                return response;
+                result.Errors.Add(new ErrorMessage(string.Empty, $"No post found with id of {id}"));
+                return result;
             }
 
             if (post.CreatorId == creatorId)
             {
-                response.Messages.Add($"Post is not access for the user to delete.");
-                return response;
+                result.Errors.Add(new ErrorMessage(string.Empty, $"Post is not access for the user to delete."));
+                return result;
             }
 
             await _repository.DeleteAsync(post.Id);
+            result.Data = true;
 
-            return response;
+            return result;
         }
 
-        public async ValueTask<Response> GetPostByIdAsync(string id)
+        public async ValueTask<ServiceResult<ReadPostDto>> GetPostByIdAsync(string id)
         {
             _ = id ?? throw new ArgumentNullException(nameof(id));
-            Response response = new();
+            ServiceResult<ReadPostDto> result = new();
 
             var post = await _repository.GetByIdAsync(id);
 
             if(post == null) 
             {
-                response.Messages.Add($"No post found with id of {id}");
-                return response;
+                result.Errors.Add(new ErrorMessage(string.Empty, $"No post found with id of {id}"));
+                return result;
             }
 
-            response.Content = post.PostToReadPostDto();
-            return response;
+            result.Data = post.PostToReadPostDto();
+            return result;
         }
     }
 }
