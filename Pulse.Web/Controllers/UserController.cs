@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Pulse.Core.DTOs;
-using Pulse.Core.Feedback;
 using Pulse.Core.Interfaces.Services;
 
 namespace Pulse.Web.Controllers;
@@ -19,34 +18,26 @@ public class UserController
     [HttpPost("/signup")]
     public async ValueTask<IActionResult> SignUp([FromBody] SignUpDto signUp)
     {
-        Response response = new();
-        
         try
         {
-            response = await _userService.SignUpAsync(signUp);
-            return new OkObjectResult(response);
+            return new OkObjectResult(await _userService.SignUpAsync(signUp));
         }
         catch (Exception ex)
         {
-            response.Messages.Add(ex.Message);
-            return new BadRequestObjectResult(response);
+            return new BadRequestObjectResult(ex.Message);
         }
     }
 
     [HttpPost("/signin")]
     public async ValueTask<IActionResult> SignIn([FromBody] SignInDto signIn)
     {
-        Response response = new();
-
         try
         {
-            response = await _userService.SignInAsync(signIn);
-            return new OkObjectResult(response);
+            return new OkObjectResult(await _userService.SignInAsync(signIn));
         }
         catch (Exception ex)
         {
-            response.Messages.Add(ex.Message);
-            return new BadRequestObjectResult(response);
+            return new BadRequestObjectResult(ex.Message);
         }
     }
 }

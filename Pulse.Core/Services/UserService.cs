@@ -29,51 +29,53 @@ public class UserService : IUserService
         _config = config;
     }
 
-    public async ValueTask<Response> SignInAsync(SignInDto signIn)
+    public async ValueTask<ServiceResult<string>> SignInAsync(SignInDto signIn)
     {
         _ = signIn ?? throw new ArgumentNullException(nameof(signIn));
-        
-        Response response = new();
 
-        if(!_signInValidation.IsValid(signIn, ref response))
+        ServiceResult<string> result = new();
+
+        if (!_signInValidation.IsValid(signIn, out List<ErrorMessage> errors))
         {
-            return response;
+            result.Errors = errors;
+            return result;
         }
 
         User user = await _userReposirory.GetUserByEmailAsync(signIn.Email!);
 
         if(user == null)
         {
-            response.Messages.Add($"There are no user registered with {signIn.Email}.");
-            return response;
+            result.Errors.Add(new ErrorMessage(nameof(signIn.Email), $"There are no user registered with {signIn.Email}."));
+            return result;
         }
 
         if(!BCrypt.Net.BCrypt.Verify(signIn.Password, user.HashedPassword))
         {
-            response.Messages.Add($"Incorrect password.");
-            return response;
+            result.Errors.Add(new ErrorMessage(nameof(signIn.Password), $"Incorrect password."));
+            return result;
         }
 
-        response.Content = GenerateToken(user);
+        result.Data = GenerateToken(user);
 
-        return response;
+        return result;
     }
 
-    public async ValueTask<Response> SignUpAsync(SignUpDto signUp)
+    public async ValueTask<ServiceResult<bool>> SignUpAsync(SignUpDto signUp)
     {
         _ = signUp ?? throw new ArgumentNullException(nameof(signUp));
 
-        Response response = new();
+        ServiceResult<bool> result = new();
 
-        if(_signUpValidation.IsValid(signUp, ref response))
+        if (!_signUpValidation.IsValid(signUp, out List<ErrorMessage> errors))
         {
-            var user = signUp.SignUpToUser();
-            await _userReposirory.CreateAsync(user);
+            result.Errors = errors;
+            return result;
         }
 
-        response.ResponseType = Enums.ResponseTypes.Okay;
+        var user = signUp.SignUpToUser();
+        await _userReposirory.CreateAsync(user);
 
-        return response;
+        return result;
     }
 
     private string GenerateToken(User user)

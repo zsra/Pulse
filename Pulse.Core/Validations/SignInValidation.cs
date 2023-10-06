@@ -6,18 +6,20 @@ namespace Pulse.Core.Validations;
 
 public class SignInValidation : IValidation<SignInDto>
 {
-    public bool IsValid(SignInDto item, ref Response response)
+    public bool IsValid(SignInDto item, out List<ErrorMessage> errors)
     {
+        errors = new List<ErrorMessage>();
+
         if (!string.IsNullOrEmpty(item.Email))
         {
-            response.Messages.Add("Username cannot be empty.");
+            errors.Add(new ErrorMessage(nameof(item.Email), "Username cannot be empty."));
         }
 
         if (!string.IsNullOrEmpty(item.Password))
         {
-            response.Messages.Add("Username cannot be empty.");
+            errors.Add(new ErrorMessage(nameof(item.Password), "Username cannot be empty."));
         }
 
-        return response.Messages.Any();
+        return errors.Any();
     }
 }

@@ -5,6 +5,6 @@ namespace Pulse.Core.Interfaces.Services;
 
 public interface IUserService
 {
-    ValueTask<Response> SignUpAsync(SignUpDto signUp);
-    ValueTask<Response> SignInAsync(SignInDto signIn);
+    ValueTask<ServiceResult<bool>> SignUpAsync(SignUpDto signUp);
+    ValueTask<ServiceResult<string>> SignInAsync(SignInDto signIn);
 }
