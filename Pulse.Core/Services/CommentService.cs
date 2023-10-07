@@ -22,54 +22,55 @@ namespace Pulse.Core.Services
             _validation = validation;
         }
 
-        public async ValueTask<Response> AddComment(CreateCommentDto comment)
+        public async ValueTask<ServiceResult<ReadPostDto>> AddComment(CreateCommentDto comment)
         {
             _ = comment ?? throw new ArgumentNullException(nameof(comment));
-            Response response = new();
+            ServiceResult<ReadPostDto> result = new();
 
-            if(!_validation.IsValid(comment, ref response))
+            if (!_validation.IsValid(comment, out List<ErrorMessage> errors))
             {
-                return response;
+                result.Errors = errors;
+                return result;
             }
 
             Post post = await _postRepository.GetByIdAsync(comment.PostId!);
 
             if (post == null)
             {
-                response.Messages.Add($"Post not avialable with {comment.PostId}");
-                return response;
+                result.Errors.Add(new ErrorMessage(nameof(comment.PostId), $"Post not avialable with {comment.PostId}"));
+                return result;
             }
 
             Comment saved = await _commentRepository.CreateAsync(comment.CreateCommentDtoToComment());
 
             if (saved == null)
             {
-                response.Messages.Add($"Comment cannot be saved");
-                return response;
+                result.Errors.Add(new ErrorMessage(nameof(comment), $"Comment cannot be saved"));
+                return result;
             }
 
-            if(comment.ReplyId != null)
+            if (comment.ReplyId != null)
             {
                 Comment reply = await _commentRepository.GetByIdAsync(comment.ReplyId);
 
-                if ( reply == null)
+                if (reply == null)
                 {
-                    response.Messages.Add($"Comment not avialable with {comment.ReplyId}");
-                    return response;
+                    result.Errors.Add(new ErrorMessage(nameof(comment), $"Comment not avialable with {comment.ReplyId}"));
+                    return result;
                 }
 
                 reply.Replies.Add(saved.Id);
                 await _commentRepository.UpdateAsync(reply);
-            } 
+            }
             else
             {
                 post.Comments.Add(saved.Id);
                 await _postRepository.UpdateAsync(post);
             }
 
-            response.Content = post.PostToReadPostDto();
+            result.Data = post.PostToReadPostDto();
 
-            return response;
+            return result;
         }
     }
 }

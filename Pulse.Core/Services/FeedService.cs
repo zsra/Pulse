@@ -1,15 +1,14 @@
-﻿using Pulse.Core.Feedback;
+﻿using Pulse.Core.DTOs;
+using Pulse.Core.Feedback;
 using Pulse.Core.Interfaces.Services;
 
 namespace Pulse.Core.Services;
 
 public class FeedService : IFeedService
 {
-    public async ValueTask<Response> GetFeed(string userId)
+    public ValueTask<ServiceResult<IReadOnlyList<ReadPostDto>>> GetFeed(string userId)
     {
         _ = userId ?? throw new ArgumentNullException(nameof(userId));
-        Response response = new Response();
-
-        return response;
+        throw new NotImplementedException();
     }
 }

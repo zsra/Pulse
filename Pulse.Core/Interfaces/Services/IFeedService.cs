@@ -1,8 +1,9 @@
-﻿using Pulse.Core.Feedback;
+﻿using Pulse.Core.DTOs;
+using Pulse.Core.Feedback;
 
 namespace Pulse.Core.Interfaces.Services;
 
 public interface IFeedService
 {
-    ValueTask<Response> GetFeed(string userId);
+    ValueTask<ServiceResult<IReadOnlyList<ReadPostDto>>> GetFeed(string userId);
 }

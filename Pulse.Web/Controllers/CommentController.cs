@@ -19,17 +19,13 @@ public class CommentController
     [HttpPost]
     public async ValueTask<IActionResult> AddComment([FromBody] CreateCommentDto comment)
     {
-        Response response = new();
-
         try
         {
-            response = await _commentService.AddComment(comment);
-            return new OkObjectResult(response);
+            return new OkObjectResult(await _commentService.AddComment(comment));
         }
         catch (Exception ex)
         {
-            response.Messages.Add(ex.Message);
-            return new BadRequestObjectResult(response);
+            return new BadRequestObjectResult(ex.Message);
         }
     }
 }

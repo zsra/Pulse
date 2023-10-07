@@ -5,5 +5,5 @@ namespace Pulse.Core.Interfaces.Services;
 
 public interface ICommentService
 {
-    ValueTask<Response> AddComment(CreateCommentDto comment);
+    ValueTask<ServiceResult<ReadPostDto>> AddComment(CreateCommentDto comment);
 }
