@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Pulse.Core.DTOs;
-using Pulse.Core.Feedback;
 using Pulse.Core.Interfaces.Services;
 
 namespace Pulse.Web.Controllers;
